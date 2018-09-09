@@ -47,39 +47,32 @@ public class ZoongImpl {
         return -1000000;
     }
     
-    public static String test(int args[], Optional<Integer> answer) {
-    	StringBuilder sb = new StringBuilder();
+    public static void test(int args[], Optional<Integer> answer, List<ResultSet> results) {
+    	ResultSet set = new ResultSet();
     	long start, finish;
-    	sb.append("\nCalculating min for: "+Arrays.toString(args));
-    	// no need to init class
-    	sb.append("\n\nRunning method 1...");
+    	
         start = System.currentTimeMillis();
         int r1 = getMin(args);
         finish = System.currentTimeMillis();
-        sb.append("\ntime: "+(finish - start)+"ms");
-        sb.append("\nanswer is: "+r1);
         
-        if (answer.isPresent()) {
-        	if (r1 != answer.get().intValue()) {
-        		sb.append("\nAnswer is not right: result is "+r1+", while answer is "+answer.get());
-        	}
-        }
+        set.setResultOne(new Result()
+        	.setAnswer(answer)
+        	.setArray(args)
+        	.setMethodName("1")
+        	.setResult(r1)
+        	.setTime(finish - start)); 
         
-        sb.append("\n\nRunning method 2...");
         start = System.currentTimeMillis();
         int r2 = getMin_(args);
         finish = System.currentTimeMillis();
-        sb.append("\ntime: "+(finish - start)+"ms");
-        sb.append("\nanswer is: "+r2);
         
-        if (answer.isPresent()) {
-        	if (r2 != answer.get().intValue()) {
-        		sb.append("\nAnswer is not right: result is "+r2+", while answer is "+answer.get());
-        	}
-        }
-         
-        if (r1 != r2) sb.append("\nResults does not match: "+r1+" and " +r2);
-        sb.append("\n###############################################");
-        return sb.toString();
+        set.setResultTwo(new Result()
+           	.setAnswer(answer)
+           	.setArray(args)
+           	.setMethodName("2")
+           	.setResult(r2)
+           	.setTime(finish - start)); 
+        
+        results.add(set);
     }
 }
